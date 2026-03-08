@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: notionlite-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: notionlite
+      POSTGRES_USER: notionlite
+      POSTGRES_PASSWORD: notionlite
+    volumes:
+      - notionlite_pgdata:/var/lib/postgresql/data
+volumes:
+  notionlite_pgdata:
