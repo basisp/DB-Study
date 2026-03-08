@@ -12,6 +12,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Integration smoke test for learning endpoints.
+ *
+ * It checks that:
+ * - row insertion works through REST
+ * - index debug endpoint returns index dumps
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class LabControllerTest {
@@ -21,6 +28,7 @@ class LabControllerTest {
 
     @Test
     void rowInsertAndIndexDumpEndpointsWork() throws Exception {
+        // Insert one row to populate table + indexes.
         mockMvc.perform(post("/api/lab/rows")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -33,6 +41,7 @@ class LabControllerTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.title").value("mysql"));
 
+        // Verify index visualization endpoint is available.
         mockMvc.perform(get("/api/lab/indexes"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.primaryBPlus").exists())
